@@ -1,4 +1,6 @@
-﻿#include "GlobData.h"
+﻿#include <cmath>
+#include "GlobData.h"
+#include <iostream>
 extern GlobData data;
 
 void GenGrid2d() {
@@ -98,4 +100,102 @@ void GenGrid2d() {
             }
         }
     }
+}
+
+void SetControlPoints() {
+    // Przypisanie współrzędnych punktów kontrolnych
+    data.mcpX[0] = 0.0;           data.mcpY[0] = 0.0;
+    data.mcpX[1] = data.mB0 / 2;  data.mcpY[1] = 0.0;
+    data.mcpX[2] = data.mB0;      data.mcpY[2] = 0.0;
+    data.mcpX[3] = 0.0;           data.mcpY[3] = data.mH0 / 2.0;
+    data.mcpX[4] = data.mB0 / 2;  data.mcpY[4] = data.mH0 / 2.0;
+    data.mcpX[5] = data.mB0;      data.mcpY[5] = data.mH0 / 2.0;
+    data.mcpX[6] = 0.0;           data.mcpY[6] = data.mH0;
+    data.mcpX[7] = data.mB0 / 2;  data.mcpY[7] = data.mH0;
+    data.mcpX[8] = data.mB0;      data.mcpY[8] = data.mH0;
+
+    // Zmienna pomocnicza dla najmniejszej odległości
+    double Rr, Rmin;
+
+    // Wyszukiwanie najbliższego węzła do punktu kontrolnego
+    for (int j = 0; j < 9; ++j) {
+        Rmin = 1e10;  // Ustawienie dużej wartości początkowej dla minimalnej odległości
+        for (int i = 0; i < data.mGr.nh; ++i) {
+            // Obliczenie odległości euklidesowej
+            Rr = std::sqrt(std::pow(data.mcpX[j] - data.mGr.ND[i].x, 2) +
+                std::pow(data.mcpY[j] - data.mGr.ND[i].y, 2));
+            if (Rr <= Rmin) {
+                data.mContrPoints[j] = i;  // Zapisanie węzła jako punkt kontrolny
+                Rmin = Rr;
+            }
+        }
+    }
+}
+
+void WriteControlPoints() {
+    // Zapis danych do pliku OutDataT.txt
+    FILE* outDataT;
+    if (fopen_s(&outDataT, "wyniki/OutDataT.txt", "a") != 0 || outDataT == nullptr) {
+        std::cerr << "Nie można otworzyć pliku wyniki/OutDataT.txt!" << std::endl;
+        return;
+    }
+
+    fprintf(outDataT, " mTau ");
+    for (int i = 0; i < 9; ++i) {
+        fprintf(outDataT, " %7.1f", data.mGr.ND[data.mContrPoints[i]].t);
+    }
+    fprintf(outDataT, "\n");
+
+    fclose(outDataT);
+
+    // Zapis danych do pliku OutDataCR.txt
+    FILE* outDataCR;
+    if (fopen_s(&outDataCR, "wyniki/OutDataCR.txt", "a") != 0 || outDataCR == nullptr) {
+        std::cerr << "Nie można otworzyć pliku wyniki/OutDataCR.txt!" << std::endl;
+        return;
+    }
+
+    fprintf(outDataCR, " mTau ");
+    for (int i = 0; i < 9; ++i) {
+        fprintf(outDataCR, " %7.1f", data.mGr.ND[data.mContrPoints[i]].CR);
+    }
+    fprintf(outDataCR, "\n");
+
+    fclose(outDataCR);
+
+    // Zapis na ekran
+    printf(" mTau ");
+    for (int i = 0; i < 4; ++i) {
+        printf(" %7.1f", data.mGr.ND[data.mContrPoints[i]].t);
+    }
+    printf("\n");
+}
+
+void WriteControlPointsBegin() {
+    FILE* outDataT;
+    FILE* outDataCR;
+
+    if (fopen_s(&outDataT, "wyniki/OutDataT.txt", "w") != 0 || outDataT == nullptr) {
+        std::cerr << "Nie można otworzyć pliku wyniki/OutDataT.txt!" << std::endl;
+        return;
+    }
+    if (fopen_s(&outDataCR, "wyniki/OutDataCR.txt", "w") != 0 || outDataCR == nullptr) {
+        std::cerr << "Nie można otworzyć pliku wyniki/OutDataCR.txt!" << std::endl;
+        fclose(outDataT);
+        return;
+    }
+    fprintf(outDataT, " ********** Coordinates of the control points ************\n");
+    for (int i = 0; i < 9; ++i) {
+        fprintf(outDataT, " No=%4d X=%8.2f Y=%8.2f\n", data.mContrPoints[i], data.mcpX[i], data.mcpY[i]);
+    }
+    fprintf(outDataT, " **********************************************************\n");
+
+    fprintf(outDataCR, " ********** Coordinates of the control points ************\n");
+    for (int i = 0; i < 9; ++i) {
+        fprintf(outDataCR, " No=%4d X=%8.2f Y=%8.2f\n", data.mContrPoints[i], data.mcpX[i], data.mcpY[i]);
+    }
+    fprintf(outDataCR, " **********************************************************\n");
+
+    fclose(outDataT);
+    fclose(outDataCR);
 }

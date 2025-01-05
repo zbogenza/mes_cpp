@@ -1,36 +1,41 @@
 ﻿#include <iostream>
 #include <cmath>
+#include <cstdlib>
 #include "GlobData.h"
 #include "InpData.h"
 #include "IniEL4.h"
 #include "GenGrid2d.h"
 #include "SaveGridToVTK.h"
+#include "Solver.h"
 
 int main() {
+    double dTauMax, TauP;
+    RemoveGridStepFiles("wyniki");
     IniEL4();
     InpData();
     GenGrid2d();
 
-    //std::cout << "Nodes:" << std::endl;
-    //for (size_t i = 0; i < data.mGr.ND.size(); ++i) {
-    //    std::cout << "Node " << i + 1 << ": ("
-    //        << data.mGr.ND[i].x << ", "
-    //        << data.mGr.ND[i].y << "), status: "
-    //        << data.mGr.ND[i].status << std::endl;
-    //}
+    SetControlPoints();
+    ALLOCATE_Matrix();
+    WriteControlPointsBegin();
 
-    //// Wyświetlenie elementów
-    //std::cout << "\nElements:" << std::endl;
-    //for (size_t i = 0; i < data.mGr.EL.size(); ++i) {
-    //    std::cout << "Element " << i + 1 << ": nodes ["
-    //        << data.mGr.EL[i].nop[0] + 1 << ", "
-    //        << data.mGr.EL[i].nop[1] + 1 << ", "
-    //        << data.mGr.EL[i].nop[2] + 1 << ", "
-    //        << data.mGr.EL[i].nop[3] + 1 << "], Npov: "
-    //        << data.mGr.EL[i].Npov << std::endl;
-    //}
+    double Asr = data.mK / (data.mC * data.mR);
+    //data.mdTime = std::pow(data.mB0 / (1E3 * data.mNhB), 2) / (0.5 * Asr);
 
-    SaveGridToVTK("grid_output.vtk");
+    WriteControlPoints();
+
+    int NTau = static_cast<int>(data.mTime / data.mdTime); //+1;
+    //data.mdTime = data.mTime / static_cast<double>(NTau);
+
+    data.mTau = 0.0;
+
+    for (int n = 1; n <= NTau; ++n) {
+        data.mTau += data.mdTime;
+        SOLVER();
+        WriteControlPoints();
+        std::string filename = "grid_step_" + std::to_string(n) + ".vtk";
+        SaveResultToVTK(filename);
+    }
 
     return 0;
 }

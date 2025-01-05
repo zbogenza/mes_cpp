@@ -36,6 +36,15 @@
     <ClCompile Include="SaveGridToVTK.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Solver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolveMatrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FeSM_Heat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="indata">
@@ -43,23 +52,32 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GlobData.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IniEL4.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InpData.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyType.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="SolveMatrix.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GenGrid2d.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IniEL4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MyType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InpData.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SaveGridToVTK.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Solver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FeSM_Heat.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
