@@ -20,12 +20,13 @@ int main() {
     WriteControlPointsBegin();
 
     double Asr = data.mK / (data.mC * data.mR);
-    //data.mdTime = std::pow(data.mB0 / (1E3 * data.mNhB), 2) / (0.5 * Asr);
 
+    //std::string filename = "grid_step_0.vtk";
+    //SaveResultToVTK(filename);
     WriteControlPoints();
-
+    std::string filename = "grid_test.vtk";
+    SaveGridToVTK(filename);
     int NTau = static_cast<int>(data.mTime / data.mdTime); //+1;
-    //data.mdTime = data.mTime / static_cast<double>(NTau);
 
     data.mTau = 0.0;
 

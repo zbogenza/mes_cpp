@@ -46,7 +46,7 @@ void SaveGridToVTK(const std::string& filename) {
     file << "SCALARS Node_Status int 1" << std::endl;
     file << "LOOKUP_TABLE default" << std::endl;
     for (const auto& node : data.mGr.ND) {
-        file << node.t << std::endl;
+        file << node.status << std::endl;
     }
 
     file.close();

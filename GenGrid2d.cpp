@@ -104,9 +104,9 @@ void GenGrid2d() {
 
 void SetControlPoints() {
     // Przypisanie współrzędnych punktów kontrolnych
-    data.mcpX[0] = 0.0;           data.mcpY[0] = 0.0;
-    data.mcpX[1] = data.mB0 / 2;  data.mcpY[1] = 0.0;
-    data.mcpX[2] = data.mB0;      data.mcpY[2] = 0.0;
+    data.mcpX[0] = 0.0;           data.mcpY[0] = 0.0;                   
+    data.mcpX[1] = data.mB0 / 2;  data.mcpY[1] = 0.0;                   
+    data.mcpX[2] = data.mB0;      data.mcpY[2] = 0.0;                   
     data.mcpX[3] = 0.0;           data.mcpY[3] = data.mH0 / 2.0;
     data.mcpX[4] = data.mB0 / 2;  data.mcpY[4] = data.mH0 / 2.0;
     data.mcpX[5] = data.mB0;      data.mcpY[5] = data.mH0 / 2.0;
@@ -141,7 +141,7 @@ void WriteControlPoints() {
     }
 
     fprintf(outDataT, " mTau ");
-    for (int i = 0; i < 9; ++i) {
+    for (int i = 0; i < 9; i++) {
         fprintf(outDataT, " %7.1f", data.mGr.ND[data.mContrPoints[i]].t);
     }
     fprintf(outDataT, "\n");
@@ -165,7 +165,7 @@ void WriteControlPoints() {
 
     // Zapis na ekran
     printf(" mTau ");
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 9; ++i) {
         printf(" %7.1f", data.mGr.ND[data.mContrPoints[i]].t);
     }
     printf("\n");

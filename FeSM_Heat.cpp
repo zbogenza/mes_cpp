@@ -71,14 +71,14 @@ void PRE_heat_pov_mat(int NEL) {
     double DetJ;
 
     // Pobranie współrzędnych węzłów elementu
-    for (int i = 0; i < data.mEL4.nbn; ++i) {
+    for (int i = 0; i < data.mEL4.nbn; i++) {
         int id = std::abs(data.mGr.EL[NEL].nop[i]);
         X[i] = data.mGr.ND[id].x;
         Y[i] = data.mGr.ND[id].y;
     }
 
     // Warunki brzegowe dla każdej powierzchni
-    for (int iPov = 0; iPov < data.mGr.EL[NEL].Npov; ++iPov) {
+    for (int iPov = 0; iPov < data.mGr.EL[NEL].Npov; iPov++) {
         int id = data.mGr.EL[NEL].aPov[iPov];
         switch (id) {
         case 0:
@@ -95,9 +95,9 @@ void PRE_heat_pov_mat(int NEL) {
             break;
         }
 
-        for (int P = 0; P < 2; ++P) {
-            for (int n = 0; n < 4; ++n) {
-                for (int i = 0; i < 4; ++i) {
+        for (int P = 0; P < 2; P++) {
+            for (int n = 0; n < 4; n++) {
+                for (int i = 0; i < 4; i++) {
                     double Ni = data.mEL4.Sf[id].Nf[i][P];
                     double Nn = data.mEL4.Sf[id].Nf[n][P];
                     data.est[n][i] += data.mAlfa * Nn * Ni * DetJ;
