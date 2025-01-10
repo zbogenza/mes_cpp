@@ -29,11 +29,11 @@ void GenGrid2d() {
             data.mGr.ND[inh - 1].y = y;
             data.mGr.ND[inh - 1].status = 0;
             data.mGr.ND[inh - 1].t = data.mTbegin; // Temperatura początkowa
+            x += dx;
 
-            y += dy;
         }
-        x += dx;
-        y = 0;  // Resetowanie y po zakończeniu jednej kolumny
+        y += dy;
+        x = 0;  // Resetowanie y po zakończeniu jednej kolumny
     }
 
     // Tworzenie elementów

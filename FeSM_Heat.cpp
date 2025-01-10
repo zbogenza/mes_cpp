@@ -50,7 +50,7 @@ void PRE_heat_mat(int NEL) {
             T0p += Temp_0[i] * Ni;
         }
 
-        DetJ = std::abs(DetJ) * data.mEL4.W[P];
+        DetJ = std::fabs(DetJ) * data.mEL4.W[P];
 
         // Montaż macierzy i wektorów lokalnych
         for (int n = 0; n < data.mEL4.nbn; ++n) {

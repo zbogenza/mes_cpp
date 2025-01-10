@@ -46,12 +46,12 @@ void ALLOCATE_Matrix() {
     }
 
     // Alokacja pamięci dla macierzy i wektorów
-    data.mA.resize(data.mLDA, std::vector<double>(data.mGr.nh, 0.0)); // Macierz A (mLDA x mGr.nh)
+    data.mA.resize(data.mGr.nh, std::vector<double>(data.mGr.nh, 0.0)); // Macierz A (mLDA x mGr.nh)
     data.mB.resize(data.mGr.nh, 0.0); // Wektor B
     data.mX.resize(data.mGr.nh, 0.0); // Wektor X
 
     // Debugging: Sprawdzanie rozmiaru alokowanych macierzy
-    std::cout << "Rozmiar mA: " << data.mLDA << " x " << data.mGr.nh << std::endl;
+    std::cout << "Rozmiar mA: " << data.mGr.nh << " x " << data.mGr.nh << std::endl;
     std::cout << "Rozmiar mB: " << data.mGr.nh << std::endl;
     std::cout << "Rozmiar mX: " << data.mGr.nh << std::endl;
 }
