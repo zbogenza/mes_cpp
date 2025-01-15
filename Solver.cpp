@@ -20,6 +20,11 @@ void SOLVER() {
             nk[i] = data.mGr.EL[NEL].nop[i];
         }
 
+        //nk[0] = data.mGr.EL[NEL].nop[0];
+        //nk[1] = data.mGr.EL[NEL].nop[3];
+        //nk[2] = data.mGr.EL[NEL].nop[2];
+        //nk[3] = data.mGr.EL[NEL].nop[1];
+
         // Obliczenie lokalnych macierzy i wektorów
         FeSM_heat(NEL);
 
@@ -42,36 +47,8 @@ void SOLVER() {
         data.mGr.ND[i].t = solutionX[i];
     }
 
-    for (int iy = 0; iy < data.mNhB; iy++) {
-        data.mGr.ND[(iy + 1) * data.mNhB - iy - 1].t = data.mGr.ND[iy*data.mNhB+iy].t;
-    }
-
-    //for (int iy = 0; iy < data.mNhB / 2; iy++) {
-        //for (int ix = 0; ix < data.mnhb / 2; ix++) {
-        //    // indeks w ćwiartce b
-        //    int indexb = iy * data.mnhb + (ix + data.mnhb / 2);
-
-        //    // indeks w ćwiartce a
-        //    int indexa = iy * data.mnhb + ix;
-
-        //    // odwrócone względem osi pionowej
-        //    int reversedindexa = iy * data.mnhb + (data.mnhb / 2 - 1 - ix);
-
-        //    // kopiowanie danych
-        //    data.mgr.nd[indexb].t = data.mgr.nd[reversedindexa].t;
-
-        //    int indexc = (iy + data.mnhb / 2) * data.mnhb + ix;
-
-        //    // indeks w ćwiartce d
-        //    int indexd = (iy + data.mnhb / 2) * data.mnhb + (ix + data.mnhb / 2);
-
-        //    // odwrócone względem osi pionowej
-        //    int reversedindexd = (iy + data.mnhb / 2) * data.mnhb + (data.mnhb - 1 - ix);
-
-        //    // kopiowanie danych d -> c (odwrócone względem pionowej osi)
-        //    data.mgr.nd[indexc].t = data.mgr.nd[reversedindexd].t;
-        //}
+    //for (int iy = 0; iy < data.mNhB; iy++) {
+    //    data.mGr.ND[(iy + 1) * data.mNhB - iy - 1].t = data.mGr.ND[iy*data.mNhB+iy].t;
     //}
-
 
 }

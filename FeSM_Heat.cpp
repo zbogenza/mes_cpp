@@ -115,7 +115,7 @@ void Jacob_2d(double J_[2][2], double J_inv[2][2], int P, int N_p, int nbn,
     const double X[], const double Y[], double& DetJ) {
     // Obliczenia macierzy Jacobiego
     J_[0][0] = J_[0][1] = J_[1][0] = J_[1][1] = 0.0;
-    for (int i = 0; i < nbn; ++i) {
+    for (int i = 0; i < nbn; i++) {
         J_[0][0] += N1[i][P] * X[i];
         J_[0][1] += N1[i][P] * Y[i];
         J_[1][0] += N2[i][P] * X[i];
@@ -128,4 +128,13 @@ void Jacob_2d(double J_[2][2], double J_inv[2][2], int P, int N_p, int nbn,
     J_inv[0][1] = -J_[0][1] / DetJ;
     J_inv[1][0] = -J_[1][0] / DetJ;
     J_inv[1][1] = J_[0][0] / DetJ;
+
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            if (std::abs(J_inv[i][j]) < 1e-12) {
+                J_[i][j] = 0.0;
+                J_inv[i][j] = 0.0;
+            }
+        }
+    }
 }

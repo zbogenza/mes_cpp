@@ -30,9 +30,9 @@ void ALLOCATE_Matrix() {
         }
 
         // Przechodzimy po węzłach w elemencie
-        for (i = 0; i < 4; ++i) {
+        for (i = 0; i < data.mGr.nbn; ++i) {
             ii = nk[i]; // Numer węzła (wiersz w pełnej macierzy)
-            for (j = 0; j < 4; ++j) {
+            for (j = 0; j < data.mGr.nbn; ++j) {
                 jj = nk[j]; // Numer węzła (kolumna w pełnej macierzy)
                 jB = jj - ii + 1; // Różnica między numerami węzłów
 
