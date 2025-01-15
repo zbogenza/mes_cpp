@@ -8,7 +8,7 @@ void GenGrid2d() {
     data.mGr.nh = data.mNhH * data.mNhB; // Liczba węzłów
     data.mGr.ne = (data.mNhH - 1) * (data.mNhB - 1); // Liczba elementów
     data.mGr.nbn = 4;  // Liczba węzłów na element
-    data.mGr.ncn = 4;  // Liczba punktów interpolacji (powiązane z N1, N2, Nf, itp.)
+    data.mGr.ncn = 4;  // Liczba krawedzi na element
     data.mGr.nhPov = data.mNhB;  // Liczba węzłów po szerokości
 
     // Inicjalizacja tablic
@@ -29,11 +29,11 @@ void GenGrid2d() {
             data.mGr.ND[inh - 1].y = y;
             data.mGr.ND[inh - 1].status = 0;
             data.mGr.ND[inh - 1].t = data.mTbegin; // Temperatura początkowa
-            x += dx;
+            y += dy;
 
         }
-        y += dy;
-        x = 0;  // Resetowanie y po zakończeniu jednej kolumny
+        x += dx;
+        y = 0;  // Resetowanie y po zakończeniu jednej kolumny
     }
 
     // Tworzenie elementów
@@ -103,7 +103,6 @@ void GenGrid2d() {
 }
 
 void SetControlPoints() {
-    // Przypisanie współrzędnych punktów kontrolnych
     data.mcpX[0] = 0.0;           data.mcpY[0] = 0.0;                   
     data.mcpX[1] = data.mB0 / 2;  data.mcpY[1] = 0.0;                   
     data.mcpX[2] = data.mB0;      data.mcpY[2] = 0.0;                   
@@ -114,7 +113,6 @@ void SetControlPoints() {
     data.mcpX[7] = data.mB0 / 2;  data.mcpY[7] = data.mH0;
     data.mcpX[8] = data.mB0;      data.mcpY[8] = data.mH0;
 
-    // Zmienna pomocnicza dla najmniejszej odległości
     double Rr, Rmin;
 
     // Wyszukiwanie najbliższego węzła do punktu kontrolnego
@@ -133,38 +131,36 @@ void SetControlPoints() {
 }
 
 void WriteControlPoints() {
-    // Zapis danych do pliku OutDataT.txt
-    FILE* outDataT;
-    if (fopen_s(&outDataT, "wyniki/OutDataT.txt", "a") != 0 || outDataT == nullptr) {
-        std::cerr << "Nie można otworzyć pliku wyniki/OutDataT.txt!" << std::endl;
-        return;
-    }
+    //FILE* outDataT;
+    //if (fopen_s(&outDataT, "wyniki/OutDataT.txt", "a") != 0 || outDataT == nullptr) {
+    //    std::cerr << "Nie można otworzyć pliku wyniki/OutDataT.txt!" << std::endl;
+    //    return;
+    //}
 
-    fprintf(outDataT, " mTau ");
-    for (int i = 0; i < 9; i++) {
-        fprintf(outDataT, " %7.1f", data.mGr.ND[data.mContrPoints[i]].t);
-    }
-    fprintf(outDataT, "\n");
+    //fprintf(outDataT, " mTau ");
+    //for (int i = 0; i < 9; i++) {
+    //    fprintf(outDataT, " %7.1f", data.mGr.ND[data.mContrPoints[i]].t);
+    //}
+    //fprintf(outDataT, "\n");
 
-    fclose(outDataT);
+    //fclose(outDataT);
 
-    // Zapis danych do pliku OutDataCR.txt
-    FILE* outDataCR;
-    if (fopen_s(&outDataCR, "wyniki/OutDataCR.txt", "a") != 0 || outDataCR == nullptr) {
-        std::cerr << "Nie można otworzyć pliku wyniki/OutDataCR.txt!" << std::endl;
-        return;
-    }
+    //FILE* outDataCR;
+    //if (fopen_s(&outDataCR, "wyniki/OutDataCR.txt", "a") != 0 || outDataCR == nullptr) {
+    //    std::cerr << "Nie można otworzyć pliku wyniki/OutDataCR.txt!" << std::endl;
+    //    return;
+    //}
 
-    fprintf(outDataCR, " mTau ");
-    for (int i = 0; i < 9; ++i) {
-        fprintf(outDataCR, " %7.1f", data.mGr.ND[data.mContrPoints[i]].CR);
-    }
-    fprintf(outDataCR, "\n");
+    //fprintf(outDataCR, " mTau ");
+    //for (int i = 0; i < 9; ++i) {
+    //    fprintf(outDataCR, " %7.1f", data.mGr.ND[data.mContrPoints[i]].CR);
+    //}
+    //fprintf(outDataCR, "\n");
 
-    fclose(outDataCR);
+    //fclose(outDataCR);
 
     // Zapis na ekran
-    printf(" mTau ");
+    printf(" Temp. w p. kontr.: ");
     for (int i = 0; i < 9; ++i) {
         printf(" %7.1f", data.mGr.ND[data.mContrPoints[i]].t);
     }

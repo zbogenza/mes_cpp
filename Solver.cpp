@@ -20,11 +20,6 @@ void SOLVER() {
             nk[i] = data.mGr.EL[NEL].nop[i];
         }
 
-        //nk[0] = data.mGr.EL[NEL].nop[0];
-        //nk[1] = data.mGr.EL[NEL].nop[3];
-        //nk[2] = data.mGr.EL[NEL].nop[2];
-        //nk[3] = data.mGr.EL[NEL].nop[1];
-
         // Obliczenie lokalnych macierzy i wektorów
         FeSM_heat(NEL);
 
@@ -46,9 +41,5 @@ void SOLVER() {
         data.mGr.ND[i].CR = (data.mGr.ND[i].t - solutionX[i]) / data.mdTime;
         data.mGr.ND[i].t = solutionX[i];
     }
-
-    //for (int iy = 0; iy < data.mNhB; iy++) {
-    //    data.mGr.ND[(iy + 1) * data.mNhB - iy - 1].t = data.mGr.ND[iy*data.mNhB+iy].t;
-    //}
 
 }

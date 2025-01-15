@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <cmath>
 #include <cstdlib>
-#include <chrono> // Dodano do mierzenia czasu
+#include <chrono> 
 #include "GlobData.h"
 #include "InpData.h"
 #include "IniEL4.h"
@@ -10,10 +10,8 @@
 #include "Solver.h"
 
 int main() {
-    // Rozpoczęcie pomiaru czasu
     auto start = std::chrono::high_resolution_clock::now();
 
-    double dTauMax, TauP;
     RemoveGridStepFiles("wyniki");
     IniEL4();
     InpData();
@@ -22,8 +20,6 @@ int main() {
     SetControlPoints();
     ALLOCATE_Matrix();
     WriteControlPointsBegin();
-
-    double Asr = data.mK / (data.mC * data.mR);
 
     //std::string filename = "grid_step_0.vtk";
     //SaveResultToVTK(filename);
@@ -34,7 +30,7 @@ int main() {
 
     data.mTau = 0.0;
 
-    for (int n = 1; n <= NTau; ++n) {
+    for (int n = 1; n <= NTau; n++) {
         //data.mTau += data.mdTime;
         SOLVER();
         WriteControlPoints();
@@ -42,11 +38,8 @@ int main() {
         SaveResultToVTK(filename);
     }
 
-    // Zakończenie pomiaru czasu
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-
-    // Wyświetlenie czasu wykonania programu
     std::cout << "Czas wykonania programu: " << elapsed.count() << " sekund" << std::endl;
 
     return 0;

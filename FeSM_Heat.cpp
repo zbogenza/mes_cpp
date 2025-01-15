@@ -3,7 +3,6 @@
 #include <algorithm>
 extern GlobData data;
 
-// Deklaracje funkcji pomocniczych
 void Jacob_2d(double J_[2][2], double J_inv[2][2], int P, int N_p, int nbn,
     const std::vector<std::vector<double>>& N1,
     const std::vector<std::vector<double>>& N2,
@@ -17,7 +16,6 @@ void FeSM_heat(int NEL) {
     std::fill(&data.est[0][0], &data.est[0][0] + 4 * 4, 0.0);
     std::fill(&data.r[0], &data.r[0] + 4, 0.0);
 
-    // Generowanie macierzy i wektorów lokalnych
     PRE_heat_mat(NEL);
     PRE_heat_pov_mat(NEL);
 }
@@ -28,7 +26,7 @@ void PRE_heat_mat(int NEL) {
     double DetJ, T0p;
 
     // Pobranie współrzędnych węzłów elementu i temperatur
-    for (int i = 0; i < data.mEL4.nbn; ++i) {
+    for (int i = 0; i < data.mEL4.nbn; i++) {
         int id = std::abs(data.mGr.EL[NEL].nop[i]);
         X[i] = data.mGr.ND[id].x;
         Y[i] = data.mGr.ND[id].y;
@@ -36,25 +34,25 @@ void PRE_heat_mat(int NEL) {
     }
 
     // Iteracja po punktach Gaussa
-    for (int P = 0; P < data.mEL4.N_p; ++P) {
+    for (int P = 0; P < data.mEL4.N_p; P++) {
         double J_[2][2] = { {0, 0}, {0, 0} };
         double J_inv[2][2] = { {0, 0}, {0, 0} };
         Jacob_2d(J_, J_inv, P, data.mEL4.N_p, data.mEL4.nbn,
             data.mEL4.N1, data.mEL4.N2, X, Y, DetJ);
 
         T0p = 0.0;
-        for (int i = 0; i < data.mEL4.nbn; ++i) {
+        for (int i = 0; i < data.mEL4.nbn; i++) {
             Ndx[i] = data.mEL4.N1[i][P] * J_inv[0][0] + data.mEL4.N2[i][P] * J_inv[0][1];
             Ndy[i] = data.mEL4.N1[i][P] * J_inv[1][0] + data.mEL4.N2[i][P] * J_inv[1][1];
             double Ni = data.mEL4.Nf[i][P];
-            T0p += Temp_0[i] * Ni;
+            T0p += Temp_0[i] * Ni;      // Interpolacja temperatury
         }
 
         DetJ = std::fabs(DetJ) * data.mEL4.W[P];
 
         // Montaż macierzy i wektorów lokalnych
-        for (int n = 0; n < data.mEL4.nbn; ++n) {
-            for (int i = 0; i < data.mEL4.nbn; ++i) {
+        for (int n = 0; n < data.mEL4.nbn; n++) {
+            for (int i = 0; i < data.mEL4.nbn; i++) {
                 double Ni = data.mEL4.Nf[i][P];
                 double Nn = data.mEL4.Nf[n][P];
                 double Hin = data.mK * (Ndx[n] * Ndx[i] + Ndy[n] * Ndy[i]) * DetJ;
@@ -77,7 +75,7 @@ void PRE_heat_pov_mat(int NEL) {
         Y[i] = data.mGr.ND[id].y;
     }
 
-    // Warunki brzegowe dla każdej powierzchni
+    // Warunki brzegowe
     for (int iPov = 0; iPov < data.mGr.EL[NEL].Npov; iPov++) {
         int id = data.mGr.EL[NEL].aPov[iPov];
         switch (id) {
@@ -113,7 +111,7 @@ void Jacob_2d(double J_[2][2], double J_inv[2][2], int P, int N_p, int nbn,
     const std::vector<std::vector<double>>& N1,
     const std::vector<std::vector<double>>& N2,
     const double X[], const double Y[], double& DetJ) {
-    // Obliczenia macierzy Jacobiego
+    // Obliczenie macierzy Jacobiego
     J_[0][0] = J_[0][1] = J_[1][0] = J_[1][1] = 0.0;
     for (int i = 0; i < nbn; i++) {
         J_[0][0] += N1[i][P] * X[i];
@@ -123,18 +121,9 @@ void Jacob_2d(double J_[2][2], double J_inv[2][2], int P, int N_p, int nbn,
     }
     DetJ = J_[0][0] * J_[1][1] - J_[0][1] * J_[1][0];
 
-    // Obliczenia odwrotności macierzy Jacobiego
+    // Obliczenie odwrotności macierzy Jacobiego
     J_inv[0][0] = J_[1][1] / DetJ;
     J_inv[0][1] = -J_[0][1] / DetJ;
     J_inv[1][0] = -J_[1][0] / DetJ;
     J_inv[1][1] = J_[0][0] / DetJ;
-
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 2; j++) {
-            if (std::abs(J_inv[i][j]) < 1e-12) {
-                J_[i][j] = 0.0;
-                J_inv[i][j] = 0.0;
-            }
-        }
-    }
 }

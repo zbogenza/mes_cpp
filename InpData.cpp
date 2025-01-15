@@ -23,20 +23,19 @@ void ALLOCATE_Matrix() {
     data.mLDA = 0;
 
     // Przechodzimy przez wszystkie elementy siatki
-    for (NEL = 0; NEL < data.mGr.ne; ++NEL) {
+    for (NEL = 0; NEL < data.mGr.ne; NEL++) {
         std::vector<int> nk(4); // Numery węzłów w elemencie
         for (i = 0; i < 4; ++i) {
             nk[i] = data.mGr.EL[NEL].nop[i]; // Pobieramy numery węzłów z elementu
         }
 
         // Przechodzimy po węzłach w elemencie
-        for (i = 0; i < data.mGr.nbn; ++i) {
-            ii = nk[i]; // Numer węzła (wiersz w pełnej macierzy)
-            for (j = 0; j < data.mGr.nbn; ++j) {
-                jj = nk[j]; // Numer węzła (kolumna w pełnej macierzy)
+        for (i = 0; i < data.mGr.nbn; i++) {
+            ii = nk[i]; // Numer węzła (wiersz)
+            for (j = 0; j < data.mGr.nbn; j++) {
+                jj = nk[j]; // Numer węzła (kolumna)
                 jB = jj - ii + 1; // Różnica między numerami węzłów
 
-                // Aktualizacja rozmiaru macierzy, jeśli potrzebne
                 if (jB >= data.mLDA) {
                     data.mLDA = jB;
                     NeMaxB = NEL;
@@ -46,12 +45,11 @@ void ALLOCATE_Matrix() {
     }
 
     // Alokacja pamięci dla macierzy i wektorów
-    data.mA.resize(data.mGr.nh, std::vector<double>(data.mGr.nh, 0.0)); // Macierz A (mLDA x mGr.nh)
-    data.mB.resize(data.mGr.nh, 0.0); // Wektor B
-    data.mX.resize(data.mGr.nh, 0.0); // Wektor X
+    data.mA.resize(data.mGr.nh, std::vector<double>(data.mGr.nh, 0.0));
+    data.mB.resize(data.mGr.nh, 0.0);
+    data.mX.resize(data.mGr.nh, 0.0);
 
-    // Debugging: Sprawdzanie rozmiaru alokowanych macierzy
-    std::cout << "Rozmiar mA: " << data.mGr.nh << " x " << data.mGr.nh << std::endl;
-    std::cout << "Rozmiar mB: " << data.mGr.nh << std::endl;
-    std::cout << "Rozmiar mX: " << data.mGr.nh << std::endl;
+    //std::cout << "Rozmiar mA: " << data.mGr.nh << " x " << data.mGr.nh << std::endl;
+    //std::cout << "Rozmiar mB: " << data.mGr.nh << std::endl;
+    //std::cout << "Rozmiar mX: " << data.mGr.nh << std::endl;
 }
